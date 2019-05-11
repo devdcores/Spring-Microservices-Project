@@ -1,0 +1,120 @@
+version: "3"
+services:
+
+  eureka-server:
+    image: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - spring-micro-network
+    environment:
+      - SERVER_PORT=8761
+
+  zipkin-server:
+    image: openzipkin/zipkin
+    container_name: zipkin-server
+    hostname: zipkin-host
+    ports:
+      - "9411:9411"
+    networks:
+      - spring-micro-network
+
+  gateway-server:
+    image: gateway-server
+    ports:
+      - "8765:8765"
+    networks:
+      - spring-micro-network
+    environment:
+      - SERVER_PORT=8765
+      - EUREKA_HOST=eureka-server
+      - ZIPKIN_HOST=zipkin-server
+    depends_on:
+      - eureka-server
+
+  address-app1:
+    image: address-app
+    ports:
+      - "7001:7001"
+    networks:
+      - spring-micro-network
+    environment:
+      - SERVER_PORT=7001
+      - EUREKA_HOST=eureka-server
+      - ZIPKIN_HOST=zipkin-server
+    depends_on:
+      - gateway-server
+      - eureka-server
+
+  address-app2:
+    image: address-app
+    ports:
+      - "7002:7002"
+    networks:
+      - spring-micro-network
+    environment:
+      - SERVER_PORT=7002
+      - EUREKA_HOST=eureka-server
+      - ZIPKIN_HOST=zipkin-server
+    depends_on:
+      - gateway-server
+      - eureka-server
+
+  address-app3:
+    image: address-app
+    ports:
+      - "7003:7003"
+    networks:
+      - spring-micro-network
+    environment:
+      - SERVER_PORT=7003
+      - EUREKA_HOST=eureka-server
+      - ZIPKIN_HOST=zipkin-server
+    depends_on:
+      - gateway-server
+      - eureka-server
+
+  users-app1:
+    image: users-app
+    ports:
+      - "8001:8001"
+    networks:
+      - spring-micro-network
+    environment:
+      - SERVER_PORT=8001
+      - EUREKA_HOST=eureka-server
+      - ZIPKIN_HOST=zipkin-server
+    depends_on:
+      - gateway-server
+      - eureka-server
+
+  users-app2:
+    image: users-app
+    ports:
+      - "8002:8002"
+    networks:
+      - spring-micro-network
+    environment:
+      - SERVER_PORT=8002
+      - EUREKA_HOST=eureka-server
+      - ZIPKIN_HOST=zipkin-server
+    depends_on:
+      - gateway-server
+      - eureka-server
+
+  users-app3:
+    image: users-app
+    ports:
+      - "8003:8003"
+    networks:
+      - spring-micro-network
+    environment:
+      - SERVER_PORT=8003
+      - EUREKA_HOST=eureka-server
+      - ZIPKIN_HOST=zipkin-server
+    depends_on:
+      - gateway-server
+      - eureka-server
+
+networks:
+  spring-micro-network:
