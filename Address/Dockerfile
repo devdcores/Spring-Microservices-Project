@@ -23,6 +23,8 @@ RUN git clone https://github.com/devdcores/Spring-Microservices-Project.git
 WORKDIR $APP_LOCATION/Spring-Microservices-Project/Address
 
 RUN mvn dependency:go-offline
+ARG CACHEBUST=1
+RUN git pull
 RUN mvn package
 
 ENTRYPOINT java -jar $APP_LOCATION/Spring-Microservices-Project/Address/target/Address-0.0.1-SNAPSHOT.jar
