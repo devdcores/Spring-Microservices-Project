@@ -15,7 +15,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-<!--		<spring-cloud.version>Greenwich.SR1</spring-cloud.version>-->
+		<skipDockerPlugin>true</skipDockerPlugin>
 	</properties>
 
 	<dependencies>
@@ -94,6 +94,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<skip>${skipDockerPlugin}</skip>
 					<repository>address-app</repository>
 					<buildArgs>
 						<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
